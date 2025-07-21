@@ -1,0 +1,6 @@
+services:
+  fastapi_app:
+    build: .
+    container_name: car_price_prediction_api
+    ports:
+      - "8000:8000"
