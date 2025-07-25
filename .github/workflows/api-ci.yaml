@@ -21,11 +21,11 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 3/4 change image name to lowercase # fail if image name is not lowercase
-        run: echo "REPO_LC=deploycamp_team14/carpriceprediction" >> $GITHUB_ENV
+        run: echo "REPO_LC=cyberius8/carpriceprediction" >> $GITHUB_ENV
 
       - name: 4/4 build and push
         uses: docker/build-push-action@v6
