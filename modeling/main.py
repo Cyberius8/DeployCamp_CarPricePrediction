@@ -1,7 +1,7 @@
 import numpy as np
 import mlflow
 import mlflow.sklearn
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, cross_val_score, KFold
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from xgboost import XGBRegressor
@@ -54,6 +54,8 @@ def main():
         }
     }
 
+    kf = KFold(n_splits=5, shuffle=True, random_state=42)
+
     # Training + Logging
     for name, entry in models.items():
         model = entry["model"]
@@ -68,20 +70,32 @@ def main():
                 mae = mean_absolute_error(y_test, q_median)
                 rmse = np.sqrt(mean_squared_error(y_test, q_median))
                 r2 = r2_score(y_test, q_median)
+                print(f"[{name}] MAE={mae:.2f}, RMSE={rmse:.2f}, R2={r2:.4f}")
+
+                # log standard metrics
+                mlflow.log_metrics({"MAE": mae, "RMSE": rmse, "R2": r2})
             else:
                 mae, rmse, r2 = evaluate_model(model, X_test, y_test)
+                cv_scores = cross_val_score(model, X, y, cv=kf, scoring="r2")
+                cv_mean = np.mean(cv_scores)
 
-            print(f"[{name}] MAE={mae:.2f}, RMSE={rmse:.2f}, R2={r2:.4f}")
+                print(f"[{name}] MAE={mae:.2f}, RMSE={rmse:.2f}, R2={r2:.4f}, CV Mean R2={cv_mean:.4f}")
 
-            # log params, metrics, model artifact
+                # log metrics + CV
+                mlflow.log_metrics({
+                    "MAE": mae,
+                    "RMSE": rmse,
+                    "R2": r2,
+                    "CV_Mean_R2": cv_mean
+                })
+
+            # log params dan model
             mlflow.log_params(params)
-            mlflow.log_metrics({"MAE": mae, "RMSE": rmse, "R2": r2})
             mlflow.sklearn.log_model(model, name)
 
-            # Register model ke Model Registry DagsHub
+            # Register ke Model Registry
             model_uri = f"runs:/{run.info.run_id}/{name}"
             mlflow.register_model(model_uri, name)
-
 
     print("🚀 Training selesai dan sudah di-log ke MLflow Dagshub!")
 
