@@ -1,6 +1,5 @@
 services:
   fastapi_app:
-    build: .
-    container_name: car_price_prediction_api
+    image: ghcr.io/cyberius8/carpriceprediction:latest
     ports:
       - "8000:8000"
