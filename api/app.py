@@ -5,9 +5,13 @@ from fastapi.responses import JSONResponse
 from router.prediction import router
 from datetime import datetime
 
-app = FastAPI()
+# MLFlow
+import mlflow
+mlflow.set_tracking_uri("https://dagshub.com/Cyberius8/DeployCamp_CarPricePrediction.mlflow")
+ml_flow_client = mlflow.MlflowClient()  
 
-# additional routes
+# FastAPI
+app = FastAPI()
 app.include_router(router)
 
 # custom error handler
