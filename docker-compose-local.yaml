@@ -1,0 +1,14 @@
+services:
+  fastapi_app:
+    build: ./api
+    container_name: price_prediction_api_local
+    ports:
+      - "8000:8000"
+  fastapi_app_frontend:
+    build: ./frontend
+    container_name: price_prediction_frontend_local
+    ports:
+      - "8001:80"
+    depends_on:
+      - fastapi_app
+      

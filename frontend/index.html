@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Prediksi Harga Mobil</title>
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div x-data="carForm()" id="car-form-container" class="car-form-container">
+  <h1 id="form-title" class="form-title">Masukkan Data Mobilmu</h1>
+  
+  <!-- input fields -->
+  <form @submit.prevent="submit()" id="car-form" class="car-form">
+    <div class="col">
+      <label for="brand">Merk <span class="required-text">(harus diisi)</span></label>
+      <input id="brand" name="brand" list="brand-list" type="text" x-model="form.brand" class="input-brand" placeholder="Toyota, Honda..." autocomplete="on" required />
+      <datalist id="brand-list">
+        <option value="alfa_romeo">Alfa Romeo</option>
+        <option value="audi">Audi</option>
+        <option value="bmw">BMW</option>
+        <option value="buick">Buick</option>
+        <option value="chevrolet">Chevrolet</option>
+        <option value="dodge">Dodge</option>
+        <option value="honda">Honda</option>
+        <option value="isuzu">Isuzu</option>
+        <option value="jaguar">Jaguar</option>
+        <option value="mazda">Mazda</option>
+        <option value="mercury">Mercury</option>
+        <option value="mitsubishi">Mitsubishi</option>
+        <option value="nissan">Nissan</option>
+        <option value="peugeot">Peugeot</option>
+        <option value="plymouth">Plymouth</option>
+        <option value="porsche">Porsche</option>
+        <option value="renault">Renault</option>
+        <option value="saab">Saab</option>
+        <option value="subaru">Subaru</option>
+        <option value="toyota">Toyota</option>
+        <option value="volkswagen">Volkswagen</option>
+        <option value="volvo">Volvo</option>
+      </datalist>
+      <small class="help">Merk otomotif (contoh: Honda, Toyota, BMW, Volkswagen, dsb.)</small>
+    </div>
+    <div class="col">
+      <label for="carlength">Panjang Mobil (inci) <span class="required-text">(harus diisi)</span></label>
+      <input id="carlength" name="carlength" type="number" x-model.number="form.carlength" min="120" max="210" step="1" inputmode="numeric" placeholder="Contoh: 175.0 inci" required />
+      <small class="help">Panjang seluruh kendaraan (inch).</small>
+    </div>
+    <div class="col">
+      <label for="carwidth">Lebar Mobil (inci) <span class="required-text">(harus diisi)</span></label>
+      <input id="carwidth" name="carwidth" type="number" x-model.number="form.carwidth" min="50" max="80" step="1" inputmode="numeric" placeholder="Contoh: 65.5 inci" required />
+      <small class="help">Lebar kendaraan (inch).</small>
+    </div>
+    <div class="col">
+      <label for="fuelsystem">Sistem Bahan Bakar</label>
+      <input id="fuelsystem" name="fuelsystem" list="fuelsystem-list" type="text" x-model="form.fuelsystem" placeholder="1 Barrel Carburetor, Multi-Point Fuel Injection..." />
+      <datalist id="fuelsystem-list">
+        <option value="1bbl">1 Barrel Carburetor</option>
+        <option value="2bbl">2 Barrel Carburetor</option>
+        <option value="4bbl">4 Barrel Carburetor</option>
+        <option value="idi">Indirect Diesel Injection</option>
+        <option value="mfi">Multi-Point Fuel Injection</option>
+        <option value="mpfi">Multi-Point Fuel Injection</option>
+        <option value="spdi">Single-Point Diesel Injection</option>
+        <option value="spfi">Single-Point Fuel Injection</option>
+      </datalist>
+      <small class="help">Tipe sistem bahan bakar (contoh: 1 Barrel Carburetor, Multi-Point Fuel Injection).</small>
+    </div>
+    <div class="col">
+      <label for="wheelbase">Wheelbase (inci)</label>
+      <input id="wheelbase" name="wheelbase" type="number" x-model.number="form.wheelbase" min="80" max="120" step="1" inputmode="numeric" placeholder="Contoh: 98.5 inch" />
+      <small class="help">Jarak antar pusat roda depan dan belakang (inch).</small>
+    </div>
+    <div class="col">
+      <label for="curbweight">Bobot (lb)</label>
+      <input id="curbweight" name="curbweight" type="number" x-model.number="form.curbweight" min="1400" max="4200" step="1" inputmode="numeric" placeholder="Contoh: 1250 lb" />
+      <small class="help">Berat kendaraan dalam kondisi siap jalan (lb).</small>
+    </div>
+    <div class="col">
+      <label for="enginesize">Kapasitas Mesin (cc)</label>
+      <input id="enginesize" name="enginesize" type="number" x-model.number="form.enginesize" min="50" max="400" step="1" inputmode="numeric" placeholder="Contoh: 120 cc" />
+      <small class="help">Kapasitas mesin (cc).</small>
+    </div>
+    <div class="col">
+      <label for="boreratio">Bore ratio (mm)</label>
+      <input id="boreratio" name="boreratio" type="number" x-model.number="form.boreratio" min="1" max="5" step="0.1" inputmode="decimal" placeholder="Contoh: 3:1 -> 3" />
+      <small class="help">Ratio diameter piston</small>
+    </div>
+    <div class="col">
+      <label for="horsepower">Horsepower (hp)</label>
+      <input id="horsepower" name="horsepower" type="number" x-model.number="form.horsepower" min="50" max="300" step="1" inputmode="numeric" placeholder="Contoh: 130 horsepower" />
+      <small class="help">Tenaga maksimum (hp)</small>
+    </div>
+    <!-- <div class="col">
+      <div style="margin-top:24px" class="meta">Required fields: <strong>Brand, Car length (inch), Car width (inch), Fuel system</strong></div>
+    </div> -->
+
+    <button type="submit">Prediksi Harga Mobil</button>
+  </form>
+
+  <!-- preview price -->
+  <h2>Rentang Harga:</h2>
+  <div>
+    <div id="preview-price" class="preview-price"><strong>Minimum:</strong> <span x-text="response ? formatCurrency(response.prediction.price_range.min) : '—'"></span></div>
+    <div id="preview-price" class="preview-price"><strong>Rata-Rata:</strong> <span x-text="response ? formatCurrency(response.prediction.price_exact) : '—'"></span></div>
+    <div id="preview-price" class="preview-price"><strong>Maximum:</strong> <span x-text="response ? formatCurrency(response.prediction.price_range.max) : '—'"></span></div>
+  </div>
+
+  <!-- preview request JSON -->
+  <!-- <h2>Request:</h2>
+  <pre x-text="JSON.stringify(parsedForm(), null, 2)"></pre> -->
+
+  <!-- preview response JSON -->
+  <!-- <h2>Response:</h2>
+  <template x-if="response">
+    <pre x-text="JSON.stringify(response, null, 2)"></pre>
+  </template> -->
+</div>
+
+<script>
+  function carForm() {
+    return {
+      // default values for optional (mean from training data)
+      form: { 
+        fuelsystem: '', brand: '', wheelbase: null, carlength: null, carwidth: null, curbweight: null, enginesize: null, boreratio: null, horsepower: null
+      },
+      fillInValues: {
+        fuelsystem: 'mpfi', brand: 'toyota', wheelbase: 97, carlength: 173.2, carwidth: 65.5, curbweight: 2414, enginesize: 120, boreratio: 3.31, horsepower: 95
+      },
+      parsedForm() {
+        return {
+          fuelsystem: this.form.fuelsystem, brand: this.form.brand, wheelbase: Number(this.form.wheelbase), carlength: Number(this.form.carlength), carwidth: Number(this.form.carwidth), curbweight: Number(this.form.curbweight), enginesize: Number(this.form.enginesize), boreratio: Number(this.form.boreratio), horsepower: Number(this.form.horsepower)
+        };
+      },
+      response: null,
+
+      async submit() {
+        try {
+          // fill missing values from fillInValues
+          const data = { ...this.parsedForm() };
+          Object.keys(this.fillInValues).forEach(key => {
+            if (data[key] === null || data[key] === '' || data[key] === 0) {
+              data[key] = this.fillInValues[key];
+            }
+          });
+
+          const res = await fetch('http://103.150.101.47:8000/predict', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          this.response = await res.json();
+        } catch (e) {
+          this.response = { error: e.message };
+        }
+      }
+    }
+  }
+
+  // global helper
+  function formatCurrency(v) {
+    const n = Number(v);
+    return new Intl.NumberFormat('id-ID', {style:'currency', currency:'IDR', maximumFractionDigits:0}).format(n);
+  }
+</script>
+
+</body>
+</html>
