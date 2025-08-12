@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from router.prediction import router
 from datetime import datetime
 
@@ -13,6 +14,18 @@ ml_flow_client = mlflow.MlflowClient()
 # FastAPI
 app = FastAPI()
 app.include_router(router)
+
+# CORS Middleware
+origins = [
+  "*"
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # custom error handler
 @app.exception_handler(RequestValidationError)
