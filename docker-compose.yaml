@@ -3,3 +3,9 @@ services:
     image: ghcr.io/cyberius8/carpriceprediction:latest
     ports:
       - "8000:8000"
+  fastapi_app_frontend:
+    image: ghcr.io/cyberius8/carpriceprediction-frontend:latest
+    ports:
+      - "8001:80"
+    depends_on:
+      - fastapi_app
