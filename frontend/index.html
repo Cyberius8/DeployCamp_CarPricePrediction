@@ -114,12 +114,22 @@
     <!-- preview price -->
     <h2>Rentang Harga:</h2>
     <div>
-      <div id="preview-price" class="preview-price"><strong>Minimum:</strong> <span
-          x-text="response ? formatCurrency(response.prediction.price_range.min) : '-'"></span></div>
-      <div id="preview-price" class="preview-price"><strong>Rata-Rata:</strong> <span
-          x-text="response ? formatCurrency(response.prediction.price_exact) : '-'"></span></div>
-      <div id="preview-price" class="preview-price"><strong>Maximum:</strong> <span
-          x-text="response ? formatCurrency(response.prediction.price_range.max) : '-'"></span></div>
+      <template x-if="response && response.status">
+        <div class="preview-error" x-text="response.status === 429 ? 'Sedang terlalu banyak permintaan. Silakan coba lagi nanti.' : 'Ada kesalahan.'"></div>
+      </template>
+      <template x-if="response && !response.status">
+        <div>
+          <div id="preview-price" class="preview-price"><strong>Minimum:</strong> <span
+              x-text="formatCurrency(response.prediction.price_range.min)"></span></div>
+          <div id="preview-price" class="preview-price"><strong>Rata-Rata:</strong> <span
+              x-text="formatCurrency(response.prediction.price_exact)"></span></div>
+          <div id="preview-price" class="preview-price"><strong>Maximum:</strong> <span
+              x-text="formatCurrency(response.prediction.price_range.max)"></span></div>
+        </div>
+      </template>
+      <template x-if="!response">
+        <div id="preview-price" class="preview-price">-</div>
+      </template>
     </div>
   </div>
 
@@ -149,7 +159,7 @@
                 data[key] = this.fillInValues[key];
               }
             });
-            const res = await fetch('http://103.150.101.47:8000/predict', {
+            const res = await fetch('http://103.150.101.47:8001/predict', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(data)
