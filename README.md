@@ -51,7 +51,7 @@ The following sections give informations about the system architecture, user flo
 - Backend generates price prediction with confidence intervals
 
 #### **Error Scenario: ML Service Busy** ❌
-- **Trigger**: ML service is busy
+- **Cause**: ML service is busy
 - **What You'll See**: 
   - Prediction box displays "Service is Busy" message
   - Form remains functional for new attempts
