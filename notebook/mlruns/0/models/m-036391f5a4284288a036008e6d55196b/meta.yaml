@@ -1,0 +1,10 @@
+artifact_location: file:///c:/Users/Gede%20Darmawan/OneDrive/Documents/project/DeployCamp_CarPricePrediction/notebook/mlruns/0/models/m-036391f5a4284288a036008e6d55196b/artifacts
+creation_timestamp: 1753792361632
+experiment_id: '0'
+last_updated_timestamp: 1753792367905
+model_id: m-036391f5a4284288a036008e6d55196b
+model_type: null
+name: Random Forest
+source_run_id: e41d50fbe0ee4ab499d024ce7c905972
+status: 2
+status_message: null
