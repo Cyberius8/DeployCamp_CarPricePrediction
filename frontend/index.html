@@ -159,7 +159,7 @@
                 data[key] = this.fillInValues[key];
               }
             });
-            const res = await fetch('http://103.150.101.47:8001/predict', {
+            const res = await fetch('https://predictcarprice.my.id/predict', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(data)

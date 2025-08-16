@@ -4,11 +4,26 @@ services:
     container_name: price_prediction_api_local
     ports:
       - "8000:8000"
+    networks:
+      - fastapi_app_network
   fastapi_app_frontend:
     build: ./frontend
     container_name: price_prediction_frontend_local
     ports:
-      - "8001:80"
+      - "80:80"
+      - "443:443"
+    volumes:
+      # for nginx configuration
+      - ./frontend/nginx:/etc/nginx/templates:ro
+      # for SSL certificates
+      - /var/www/certbot:/var/www/certbot:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    networks:
+      - fastapi_app_network
     depends_on:
       - fastapi_app
+
+networks:
+  fastapi_app_network:
+    driver: bridge
       
