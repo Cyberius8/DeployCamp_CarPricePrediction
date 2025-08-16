@@ -20,10 +20,19 @@ class CarPredictionRequest(BaseModel):
   horsepower: float
 
 # Response model  
+class PriceRange(BaseModel):
+    min: int
+    max: int
+
+class Prediction(BaseModel):
+    price_exact: int
+    price_range: PriceRange
+    confidence: float
+
 class CarPredictionResponse(BaseModel):
-  prediction: dict
-  currency: str
-  timestamp: str
+    prediction: Prediction
+    currency: str
+    timestamp: datetime
 
 class MLService:
   def __init__(self):

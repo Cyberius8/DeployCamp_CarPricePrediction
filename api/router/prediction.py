@@ -6,7 +6,12 @@ router = APIRouter()
 ml_service = MLService()
 
 # convert json body request to dict
-@router.post("/predict")
+@router.post(
+  "/predict",
+  response_model=CarPredictionResponse,
+  summary="Predict car pricing",
+  response_description="Predicted car price response payload"
+)
 async def predict(request: CarPredictionRequest):
   data = request.dict()
   result = ml_service.predict(data, "rfq")
