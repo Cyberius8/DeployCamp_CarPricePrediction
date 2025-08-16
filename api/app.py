@@ -38,10 +38,20 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     }),
   )
 
-@app.get("/")
+@app.get(
+  "/",
+  response_model=dict,
+  summary="Welcome page for API",
+  response_description="Welcome message"
+)
 def hello():
     return {"message": "hello this is car price predictor using FastAPI"}
 
-@app.get("/health")
+@app.get(
+  "/health",
+  response_model=dict,
+  summary="Health check endpoint",
+  response_description="Health status of the FastAPI application"
+)
 def health_check():
     return {"status": "FastAPI is ready"}
